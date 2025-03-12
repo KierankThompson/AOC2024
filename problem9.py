@@ -1,6 +1,8 @@
 from collections import defaultdict
-import sys
+import time
 
+
+start = time.time()
 arr = []
 with open("problem9.txt") as f:
     diskMap = f.read()
@@ -30,14 +32,19 @@ while arr[i] != ".":
     ans += arr[i] * i
     i += 1
 print(ans)
+end = time.time()
+print(end-start)
 
 
+start = time.time()
 ans = 0
 freeSpaceHeap = []
 fileDic = defaultdict(list)
 arr = []
 with open("problem9.txt") as f:
     arrIndex = 0
+    curID = 0
+    diskmap = f.read()
     for i in range(0,len(diskMap)):
         if not i % 2:
             for j in range(int(diskMap[i])):
@@ -53,11 +60,11 @@ while freeSpaceHeap:
     index,space = freeSpaceHeap.pop(0)
     fits = []
     for spaces in range(space,0,-1):
-        if fileDic[spaces] and fileDic[spaces][0][0] > space:
-            fits.append((fileDic[spaces][0][0],spaces))
+        if fileDic[spaces] and fileDic[spaces][-1][0] > index:
+            fits.append((fileDic[spaces][-1][0],spaces))
     if fits:
         bestFit = max(fits)[1]
-        fileIndex,curFile = fileDic[bestFit].pop(0)
+        fileIndex,curFile = fileDic[bestFit].pop()
         for i in range(bestFit):
             arr[index+i] = curFile
             arr[fileIndex+i] = "."
@@ -67,6 +74,10 @@ for i,ele in enumerate(arr):
     if ele != ".":
         ans += i * int(ele)
 print(ans)
+end = time.time()
+print(end-start)
+
+
 
 
 
